@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Direct Chat</title>
+</head>
+
+<body>
+    <h2>WebSocket Chat</h2>
+    <div>
+        <input id="targetUser" placeholder="To (userId)" />
+        <input id="messageInput" placeholder="Type message..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <pre id="output"></pre>
+
+    <script>
+        const userId = prompt("Enter your name for suer id ");
+        const socket = new WebSocket(`ws://localhost:8080?user=${userId}`);
+        const output = document.getElementById('output');
+
+        socket.onopen = () => {
+            appendOutput(`✅ Connected as ${userId}`);
+        };
+
+        socket.onmessage = (event) => {
+            const msg = JSON.parse(event.data);
+            appendOutput(`📩 From ${msg.from}: ${msg.text}`);
+        };
+
+        socket.onclose = () => {
+            appendOutput(`❌ Disconnected`);
+        };
+
+        socket.onerror = (error) => {
+            appendOutput(`⚠️ Error: ${error.message}`);
+        };
+
+        function sendMessage() {
+            const to = document.getElementById('targetUser').value.trim();
+            const text = document.getElementById('messageInput').value.trim();
+
+            if (!to || !text) return;
+
+            const message = {
+                to,
+                text,
+            };
+
+            socket.send(JSON.stringify(message));
+            appendOutput(`Me ➡️ ${to}: ${text}`);
+            document.getElementById('messageInput').value = '';
+        }
+
+        function appendOutput(msg) {
+            output.textContent += msg + '\n';
+        }
+    </script>
+</body>
+
+</html>
