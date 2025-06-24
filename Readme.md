@@ -35,8 +35,8 @@ You need to have Node.js installed on your machine.
 
     If you have a Git repository, clone it:
     ```bash
-    git clone <your-repository-url>
-    cd <your-repository-name>
+    git clone https://github.com/harshini-ns/websocket-implementation
+    cd websocket-imple
     ```
     If you're creating the files manually, ensure `server.js` and `index.html` are in the same root directory.
 
@@ -73,4 +73,3 @@ You need to have Node.js installed on your machine.
     * Click the "Send" button.
 * **Receive Messages:** Messages sent to you will appear in the output area.
 
-## Project Structure
